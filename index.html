@@ -8,14 +8,25 @@
     <link rel="stylesheet" href="index.css" />
     <!-- viewer -->
     <script type="module" src="/src/viewer-3d.ts"></script>
+    <style>
+      /* Override standard panel css */
+      viewer-3d {
+        --viewer-3d-primary: lightgreen;
+        --viewer-3d-secondary: red;
+      }
+    </style>
   </head>
   <body>
-    <viewer-3d>
+    <viewer-3d 
+      appKey="asd"
+      appSecret="antani"
+      showContentDetail>
       <!-- 
-        il contenuto del tag per il momento verrà ignorato
-        Possibile Feature - help per visualizzare la descrizione dell'articolo 
+        il contenuto del tag per il momento verrà visualizzato in alto a sinistra
+        Possibile Feature - panel a scomparsa per visualizzare la descrizione dell'articolo 
       -->
-      <h1>Viewer</h1> 
+      <h1>Viewer</h1>
+      <p>ciaone proprio</p>
     </viewer-3d>
   </body>
 </html>

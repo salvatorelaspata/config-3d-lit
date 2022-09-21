@@ -14,12 +14,7 @@ manager.onProgress = function (item, loaded, total) {
   console.log(item, loaded, total)
 }
 
-type loadRGBEType = (
-  path: string,
-  fileName: string
-) => Promise<THREE.DataTexture>
-
-export const loadRGBE: loadRGBEType = (path, fileName) =>
+export const loadRGBE: _loadRGBEType = (path, fileName) =>
   new Promise((resolve, reject) => {
     try {
       const hdrEquirect = new RGBELoader()
@@ -33,9 +28,7 @@ export const loadRGBE: loadRGBEType = (path, fileName) =>
     }
   })
 
-type loadObjType = (path: string, fileName: string) => Promise<THREE.Group>
-
-export const loadObj: loadObjType = (path, fileName) =>
+export const loadObj: _loadObjType = (path, fileName) =>
   new Promise((resolve, reject) => {
     objLoader.load(
       `${path}${fileName}`,
@@ -54,12 +47,7 @@ export const loadObj: loadObjType = (path, fileName) =>
     )
   })
 
-type loadObjectType = (
-  path: string,
-  fileName: string
-) => Promise<THREE.Object3D>
-
-export const loadObject: loadObjectType = (path, fileName) =>
+export const loadObject: _loadObjectType = (path, fileName) =>
   new Promise((res, rej) => {
     objectLoader.load(
       `${path}${fileName}`,
@@ -78,12 +66,11 @@ export const loadObject: loadObjectType = (path, fileName) =>
     )
   })
 
-type loadTextureType = (
-  path: string,
-  fileName: string
-) => Promise<THREE.Texture>
+// texture
+export const loadTexture: _loadTextureType = (path, fileName) =>
+  textureLoader.load(`${path}${fileName}`)
 
-export const loadTexture: loadTextureType = (path, fileName) =>
+export const loadAsyncTexture: _loadAsyncTextureType = (path, fileName) =>
   new Promise((resolve, reject) => {
     textureLoader.load(
       `${path}${fileName}`,
@@ -124,8 +111,7 @@ export const generateTexture: () => THREE.CanvasTexture = () => {
   return texture
 }
 
-type loadFBXType = (path: string, fileName: string) => Promise<THREE.Group>
-export const loadFBX: loadFBXType = (path, fileName) =>
+export const loadFBX: _loadFBXType = (path, fileName) =>
   new Promise((resolve, reject) => {
     fbxLoader.load(
       `${path}${fileName}`,
@@ -143,3 +129,17 @@ export const loadFBX: loadFBXType = (path, fileName) =>
       }
     )
   })
+
+export const loadModel = (object: ObjectConfig) => {
+  return object?.type === 'obj' || !object?.type
+    ? loadObj(object?.path || '/models/obj/', object?.fileName || 'lego.obj')
+    : object.type === 'json'
+    ? loadObject(
+        object?.path || '/models/obj/',
+        object?.fileName || 'lego.json'
+      )
+    : loadFBX(
+        object?.path || '/models/fbx/',
+        object?.fileName || 'Fruttiera.fbx'
+      )
+}
