@@ -7,8 +7,8 @@ export class Viewer3d extends LitElement {
   @property({ type: String })
   objId = '7c7b8d1a-b7af-4c74-b1e3-a3202052d6f1'
 
-  @property({ type: Number })
-  count = 0
+  @property({ type: Boolean })
+  showContentDetail = false
 
   @query('#viewer')
   mount: HTMLDivElement | undefined
@@ -23,7 +23,9 @@ export class Viewer3d extends LitElement {
     if (this.mount) use3DViewer(this.mount, this.objId)
     return html`
       <div>
-        <slot></slot>
+        <div class="slot" ${!this.showContentDetail ? 'hidden' : ''}>
+          <slot />
+        </div>
         <div id="viewer" objId="${this.objId}" />
       </div>
     `
@@ -35,7 +37,18 @@ export class Viewer3d extends LitElement {
       height: 100vh;
       margin: 0 auto;
     }
-
+    .slot {
+      background: white;
+      color: #242424;
+      position: absolute;
+      width: 25%;
+    }
+    #viewer {
+      background: red;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     @media (prefers-color-scheme: light) {
     }
   `

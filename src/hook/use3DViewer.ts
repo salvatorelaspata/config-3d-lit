@@ -1,8 +1,15 @@
 import * as THREE from 'three'
+import { Object3D } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // import { catalog } from "../config/catalog";
 // import { actions } from "../store/store";
-import { generateTexture, loadFBX, loadObj, loadRGBE } from './useLoader'
+import {
+  generateTexture,
+  loadFBX,
+  loadObj,
+  loadObject,
+  loadRGBE,
+} from './useLoader'
 
 let texture = generateTexture()
 // const setTexture = t => {
@@ -27,8 +34,8 @@ const meshParams = {
   exposure: 1,
 }
 
-const _WIDTH = window.innerWidth * 0.9
-const _HEIGHT = window.innerHeight * 0.9
+const _WIDTH = window.innerWidth // * 0.9
+const _HEIGHT = window.innerHeight // * 0.9
 const _ASPECT_RATIO = _WIDTH / _HEIGHT
 
 let camera: THREE.PerspectiveCamera,
@@ -39,8 +46,8 @@ let camera: THREE.PerspectiveCamera,
 
 const _onWindowResize = () => {
   // console.log("_onWindowResize", _WIDTH, _HEIGHT);
-  const width = window.innerWidth * 0.9
-  const height = window.innerHeight * 0.9
+  const width = window.innerWidth // * 0.9
+  const height = window.innerHeight // * 0.9
 
   camera.aspect = width / height
   camera.updateProjectionMatrix()
@@ -116,8 +123,8 @@ export const use3DViewer = (mount: HTMLDivElement | undefined, objId = '') => {
   const c = {
     object: {
       path: '/models/obj/',
-      fileName: 'lego.obj',
-      type: 'obj',
+      fileName: 'lego.json',
+      type: 'json',
     },
     background: {
       // da rimuovere per /configurator
@@ -133,6 +140,7 @@ export const use3DViewer = (mount: HTMLDivElement | undefined, objId = '') => {
     background?.fileName || 'pedestrian_overpass_1k.hdr'
   ).then(hdrEquirect => {
     // load object model .obj
+    console.log(object?.type)
     Promise.all([
       // loadObj("/models/obj/", "lego.obj"),
       // loadFBX("/models/fbx/", "Fruttiera2.fbx"),
@@ -142,6 +150,11 @@ export const use3DViewer = (mount: HTMLDivElement | undefined, objId = '') => {
             object?.path || '/models/obj/',
             object?.fileName || 'lego.obj'
           )
+        : object.type === 'json'
+        ? loadObject(
+            object?.path || '/models/obj/',
+            object?.fileName || 'lego.json'
+          )
         : loadFBX(
             object?.path || '/models/fbx/',
             object?.fileName || 'Fruttiera.fbx'
@@ -149,7 +162,6 @@ export const use3DViewer = (mount: HTMLDivElement | undefined, objId = '') => {
     ]).then(([obj /*, fbx, fbx2*/]) => {
       // loadObj("./models/obj/", "lego.obj").then((obj) => {
       // loadFBX("./models/fbx/", "Fruttiera2.fbx").then((obj) => {
-
       obj.rotation.set(0, 90, 0)
       // apply random mesh color to object model
       applyRandomMesh(obj, texture, hdrEquirect)

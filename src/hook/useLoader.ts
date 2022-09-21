@@ -2,9 +2,11 @@ import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+import { ObjectLoader } from 'three'
 
 const manager = new THREE.LoadingManager()
 const objLoader = new OBJLoader(manager)
+const objectLoader = new ObjectLoader()
 const fbxLoader = new FBXLoader()
 const textureLoader = new THREE.TextureLoader(manager)
 
@@ -31,9 +33,9 @@ export const loadRGBE: loadRGBEType = (path, fileName) =>
     }
   })
 
-type loadObjectType = (path: string, fileName: string) => Promise<THREE.Group>
+type loadObjType = (path: string, fileName: string) => Promise<THREE.Group>
 
-export const loadObj: loadObjectType = (path, fileName) =>
+export const loadObj: loadObjType = (path, fileName) =>
   new Promise((resolve, reject) => {
     objLoader.load(
       `${path}${fileName}`,
@@ -48,6 +50,30 @@ export const loadObj: loadObjectType = (path, fileName) =>
       },
       err => {
         reject(err)
+      }
+    )
+  })
+
+type loadObjectType = (
+  path: string,
+  fileName: string
+) => Promise<THREE.Object3D>
+
+export const loadObject: loadObjectType = (path, fileName) =>
+  new Promise((res, rej) => {
+    objectLoader.load(
+      `${path}${fileName}`,
+      function (obj) {
+        res(obj)
+      },
+      xhr => {
+        if (xhr.lengthComputable) {
+          const percentComplete = (xhr.loaded / xhr.total) * 100
+          console.log(Math.round(percentComplete) + '% downloaded')
+        }
+      },
+      err => {
+        rej(err)
       }
     )
   })
