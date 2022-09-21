@@ -4,11 +4,11 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     lib: {
-      entry: 'src/my-element.ts',
-      formats: ['es']
+      entry: 'src/viewer-3d.ts',
+      formats: ['es'],
     },
     rollupOptions: {
-      external: /^lit/
-    }
-  }
+      external: /^lit/,
+    },
+  },
 })

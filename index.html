@@ -18,15 +18,17 @@
   </head>
   <body>
     <viewer-3d 
-      appKey="asd"
-      appSecret="antani"
       showContentDetail>
       <!-- 
         il contenuto del tag per il momento verrà visualizzato in alto a sinistra
         Possibile Feature - panel a scomparsa per visualizzare la descrizione dell'articolo 
       -->
-      <h1>Viewer</h1>
-      <p>ciaone proprio</p>
     </viewer-3d>
+    <script>
+      const el = document.querySelector('viewer-3d')
+      el.addEventListener('viewer-click', ()=>{
+        console.log('viewer-click')
+      })
+    </script>
   </body>
 </html>

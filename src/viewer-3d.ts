@@ -13,11 +13,8 @@ export class Viewer3d extends LitElement {
   title = 'VIEWER-3D'
   @property({ type: String })
   description = ''
-  // 'Vi è capitato mai di incontrare la scritta “Lorem ipsum dolor sit amet ecc…”? Sapete di cosa si tratta? E’ fondamentalmente un testo segnaposto utilizzato nella stampa e tipografia per definire lo spazio occupato da un testo che ancora non si ha a disposizione, quindi non dovreste vederla mai a meno che non la usate per lavoro.. Anche nei siti web in fase di costruzione esso è molto utilizzato per delimitare gli spazi del testo con quelli della grafica e delle immagini. In questo modo si può far visionare al cliente come verrà strutturato il sito'
   @property({ type: Boolean })
   showContentDetail = false
-  @property({ type: Boolean, state: true })
-  show = false
   @property({ type: Viewer3d })
   modelConfig = {
     object: {
@@ -30,6 +27,8 @@ export class Viewer3d extends LitElement {
       fileName: 'pedestrian_overpass_1k.hdr',
     },
   }
+  @property({ type: Boolean, state: true })
+  show = false
 
   // React - useRef
   @query('#viewer')
@@ -39,13 +38,15 @@ export class Viewer3d extends LitElement {
   firstUpdated() {
     use3DViewer(this.mount, this.modelConfig)
   }
-
   _clickSlot() {
     this.show = !this.show
   }
-
+  onClickViewer(e: MouseEvent) {
+    e.stopPropagation()
+    this.dispatchEvent(new CustomEvent('viewer-click', { bubbles: true }))
+  }
   render() {
-    return html`<div id="viewer"></div>
+    return html`<div @click=${this.onClickViewer} id="viewer"></div>
       ${when(
         this.showContentDetail,
         () =>
