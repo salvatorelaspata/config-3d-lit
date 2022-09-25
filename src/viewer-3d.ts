@@ -24,7 +24,7 @@ export class Viewer3d extends LitElement {
     },
     background: {
       path: '/models/textures/',
-      fileName: 'pedestrian_overpass_1k.hdr',
+      fileName: 'studio_small_09_4k.hdr',
     },
   }
   @property({ type: Boolean, state: true })
