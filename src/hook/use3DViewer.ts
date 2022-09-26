@@ -125,7 +125,7 @@ export const applyTextureOnMesh = (
 
 export const use3DViewer = (
   mount: HTMLDivElement | undefined,
-  modelConfig: Viewer3d
+  modelConfig: Viewer3dType
 ) => {
   const { object, background } = modelConfig
   // load hdr equirectangular texture for environment mapping

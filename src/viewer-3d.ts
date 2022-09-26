@@ -15,7 +15,7 @@ export class Viewer3d extends LitElement {
   description = ''
   @property({ type: Boolean })
   showContentDetail = false
-  @property({ type: Viewer3d })
+  @property({ type: Object })
   modelConfig = {
     object: {
       path: '/models/obj/',

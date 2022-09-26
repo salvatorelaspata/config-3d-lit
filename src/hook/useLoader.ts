@@ -17,12 +17,19 @@ manager.onProgress = function (item, loaded, total) {
 export const loadRGBE: _loadRGBEType = (path, fileName) =>
   new Promise((resolve, reject) => {
     try {
-      const hdrEquirect = new RGBELoader()
-        .setPath(path)
-        .load(fileName, function () {
+      const hdrEquirect = new RGBELoader().setPath(path).load(
+        fileName,
+        function () {
           hdrEquirect.mapping = THREE.EquirectangularReflectionMapping
           resolve(hdrEquirect)
-        })
+        },
+        xhr => {
+          if (xhr.lengthComputable) {
+            const percentComplete = (xhr.loaded / xhr.total) * 100
+            console.log('RGBE', Math.round(percentComplete) + '% downloaded')
+          }
+        }
+      )
     } catch (error) {
       reject(error)
     }
@@ -38,7 +45,7 @@ export const loadObj: _loadObjType = (path, fileName) =>
       xhr => {
         if (xhr.lengthComputable) {
           const percentComplete = (xhr.loaded / xhr.total) * 100
-          console.log(Math.round(percentComplete) + '% downloaded')
+          console.log('Obj', Math.round(percentComplete) + '% downloaded')
         }
       },
       err => {
@@ -57,7 +64,7 @@ export const loadObject: _loadObjectType = (path, fileName) =>
       xhr => {
         if (xhr.lengthComputable) {
           const percentComplete = (xhr.loaded / xhr.total) * 100
-          console.log(Math.round(percentComplete) + '% downloaded')
+          console.log('Object', Math.round(percentComplete) + '% downloaded')
         }
       },
       err => {
@@ -80,7 +87,7 @@ export const loadAsyncTexture: _loadAsyncTextureType = (path, fileName) =>
       xhr => {
         if (xhr.lengthComputable) {
           const percentComplete = (xhr.loaded / xhr.total) * 100
-          console.log(Math.round(percentComplete) + '% downloaded')
+          console.log('Texture', Math.round(percentComplete) + '% downloaded')
         }
       },
       err => {
@@ -121,7 +128,7 @@ export const loadFBX: _loadFBXType = (path, fileName) =>
       xhr => {
         if (xhr.lengthComputable) {
           const percentComplete = (xhr.loaded / xhr.total) * 100
-          console.log(Math.round(percentComplete) + '% downloaded')
+          console.log('FBX', Math.round(percentComplete) + '% downloaded')
         }
       },
       err => {

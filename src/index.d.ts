@@ -10,12 +10,12 @@ type BackgroundConfig = {
   fileName: string
 }
 
-interface Viewer3d {
+interface Viewer3dType {
   object: ObjectConfig
   background: BackgroundConfig
 }
 
-interface ObjectViewer3d extends Viewer3d {
+interface ObjectViewer3d extends Viewer3dType {
   objId: string
   showStars: boolean
   price: string
