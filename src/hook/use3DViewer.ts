@@ -1,10 +1,14 @@
 import * as THREE from 'three'
-import { Object3D } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // import { catalog } from "../config/catalog";
 // import { actions } from "../store/store";
 
-import { generateTexture, loadModel, loadRGBE, loadTexture } from './useLoader'
+import {
+  generateTexture,
+  loadAsyncTexture,
+  loadModel,
+  loadRGBE,
+} from './useLoader'
 
 const _WIDTH = window.innerWidth // * 0.9
 const _HEIGHT = window.innerHeight // * 0.9
@@ -128,7 +132,7 @@ export const use3DViewer = (
   Promise.all([
     loadRGBE(background.path, background.fileName),
     loadModel(object),
-    loadTexture(texture.path, texture.fileName),
+    loadAsyncTexture(texture.path, texture.fileName),
   ]).then(([hdrEquirect, obj, texture]) => {
     // apply random mesh color to object model
     applyTextureOnMesh(obj, true, hdrEquirect, texture)
