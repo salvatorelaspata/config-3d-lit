@@ -16,11 +16,15 @@ export class Viewer3d extends LitElement {
   @property({ type: Boolean })
   showContentDetail = false
   @property({ type: Object })
-  modelConfig = {
+  modelConfig: Viewer3dType = {
     object: {
       path: '/models/obj/',
-      fileName: 'lego.json',
-      type: 'json',
+      fileName: 'lego.obj',
+      type: 'obj',
+    },
+    texture: {
+      path: 'https://cdn.pixabay.com/photo/2018/02/24/11/09/', // '/models/textures/', //
+      fileName: 'background-3177833_960_720.jpg', // 'PignaOC.png', //
     },
     background: {
       path: '/models/textures/',

@@ -5,6 +5,11 @@ type ObjectConfig = {
   type: string
 }
 
+type TextureConfig = {
+  path: string
+  fileName: string
+}
+
 type BackgroundConfig = {
   path: string
   fileName: string
@@ -12,6 +17,7 @@ type BackgroundConfig = {
 
 interface Viewer3dType {
   object: ObjectConfig
+  texture: TextureConfig
   background: BackgroundConfig
 }
 
