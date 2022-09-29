@@ -1,6 +1,6 @@
 {
-  "name": "config-3d-lit",
-  "private": true,
+  "name": "viewer-3d-lit",
+  "private": false,
   "version": "0.0.1",
   "type": "module",
   "main": "dist/viewer-3d.es.js",
@@ -13,7 +13,7 @@
     "types"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build"
   },
   "dependencies": {

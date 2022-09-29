@@ -18,9 +18,9 @@ export class Viewer3d extends LitElement {
   @property({ type: Object })
   modelConfig: Viewer3dType = {
     object: {
-      path: '/models/obj/',
-      fileName: 'lego.obj',
-      type: 'obj',
+      path: '/models/fbx/',
+      fileName: 'Fruttiera.fbx',
+      type: 'fbx',
     },
     texture: {
       path: 'https://cdn.pixabay.com/photo/2018/02/24/11/09/', // '/models/textures/', //

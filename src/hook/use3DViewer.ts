@@ -135,7 +135,7 @@ export const use3DViewer = (
     loadAsyncTexture(texture.path, texture.fileName),
   ]).then(([hdrEquirect, obj, texture]) => {
     // apply random mesh color to object model
-    applyTextureOnMesh(obj, true, hdrEquirect, texture)
+    applyTextureOnMesh(obj, false, hdrEquirect, texture)
     // create and configure renderer
     renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
