@@ -46,7 +46,7 @@ import:
     --viewer-3d-primary: lightgreen;
     --viewer-3d-secondary: red;
   }
-</stile>
+</style>
 ```
 
 ## Custom Event
