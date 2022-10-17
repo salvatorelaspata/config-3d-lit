@@ -1,81 +1,76 @@
 import { LitElement, css, html } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
-import { when } from 'lit/directives/when.js'
-import { use3DViewer } from './hook/use3DViewer'
+import { applyTextureOnMesh, use3DViewer } from './hook/use3DViewer'
 
 @customElement('viewer-3d')
 export class Viewer3d extends LitElement {
-  @property({ type: String })
-  appKey = ''
-  @property({ type: String })
-  appSecret = ''
-  @property({ type: String })
-  title = 'VIEWER-3D'
-  @property({ type: String })
-  description = ''
-  @property({ type: Boolean })
-  showContentDetail = false
+  // modelConfig: Viewer3dType
+  // the path is local or remote
+  // if texture is not defined, a default texture is applied (generateTexture)
   @property({ type: Object })
   modelConfig: Viewer3dType = {
     object: {
-      path: '/models/fbx/',
-      fileName: 'Fruttiera.fbx',
-      type: 'fbx',
+      path: '/models/obj/',
+      fileName: 'PignaOC.obj',
+      type: 'obj', // fbx, obj, json
     },
     texture: {
-      path: 'https://cdn.pixabay.com/photo/2018/02/24/11/09/', // '/models/textures/', //
-      fileName: 'background-3177833_960_720.jpg', // 'PignaOC.png', //
+      path: '/models/textures/',
+      fileName: 'PignaOC.png',
     },
     background: {
       path: '/models/textures/',
       fileName: 'studio_small_09_4k.hdr',
     },
   }
-  @property({ type: Boolean, state: true })
-  show = false
 
   // React - useRef
   @query('#viewer')
   mount: HTMLDivElement | undefined
 
+  // React - useState
+  @property({ type: Object, state: true })
+  scene: { obj: any; hdrEquirect: any; texture: any } = {
+    obj: null,
+    hdrEquirect: null,
+    texture: null,
+  }
+
+  @property({ type: Boolean })
+  isLoaded = false
+
   // React - componentDidMount | useEffect
   firstUpdated() {
-    use3DViewer(this.mount, this.modelConfig)
+    const aUse = async () => {
+      const { obj, hdrEquirect, texture } = await use3DViewer(
+        this.mount,
+        this.modelConfig
+      )
+      this.scene = { obj, hdrEquirect, texture }
+      this.isLoaded = true
+    }
+    aUse()
   }
-  _clickSlot() {
-    this.show = !this.show
-  }
+
   onClickViewer(e: MouseEvent) {
     e.stopPropagation()
-    this.dispatchEvent(new CustomEvent('viewer-click', { bubbles: true }))
+    const { obj, hdrEquirect, texture } = this.scene
+    this.dispatchEvent(
+      new CustomEvent('viewer-click', {
+        bubbles: true,
+        detail: applyTextureOnMesh(obj, hdrEquirect, texture),
+      })
+    )
   }
+
   render() {
-    return html`<div @click=${this.onClickViewer} id="viewer"></div>
-      ${when(
-        this.showContentDetail,
-        () =>
-          html`${when(
-            this.show,
-            () =>
-              html`<div class="slot">
-                <div class="dot" @click=${this._clickSlot}>
-                  <span class="noselect">ⅹ</span>
-                </div>
-                <div class="slot-container">
-                  <!-- <slot></slot> -->
-                  <h1 class="slot-title">${this.title}</h1>
-                  ${when(
-                    this.description,
-                    () => html`<p>${this.description}</p>`
-                  )}
-                </div>
-              </div>`,
-            () =>
-              html`<div class="slot dot" @click=${this._clickSlot}>
-                <span class="noselect">ℹ</span>
-              </div>`
-          )}`
-      )}`
+    return html`<div
+        class=${this.isLoaded && 'hidden'}
+        @click=${this.onClickViewer}
+        id="viewer"
+      ></div>
+      <!-- Integrare percentuale -->
+      <div class=${!this.isLoaded && 'loader hidden'}>loading...</div>`
   }
 
   static styles = css`
@@ -84,48 +79,13 @@ export class Viewer3d extends LitElement {
       height: 100vh;
       margin: 0 auto;
     }
-    .slot {
-      background: var(--viewer-3d-primary, #ffffff);
-      color: var(--viewer-3d-secondary, #242424);
+    .loader {
       position: absolute;
-      width: 25%;
-      border-radius: 2rem;
-      top: 1rem;
-      left: 1rem;
-      display: flex;
-      justify-content: space-between;
-    }
-    .slot-container {
-      display: flex;
-      flex-direction: column;
-      text-align: inherit;
-      margin: 1.5rem;
-      font-family: monospace;
-      width: 100%;
-    }
-    .slot-title {
-      text-align: right;
-      font-family: monospace;
-    }
-    .dot {
-      height: 3rem;
-      width: 3rem;
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      background: var(--viewer-3d-secondary, #242424);
-      cursor: pointer;
-    }
-    .dot > span {
-      color: var(--viewer-3d-primary, #ffffff);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       font-size: 2rem;
-    }
-    #viewer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: #fff;
     }
     .noselect {
       -webkit-touch-callout: none; /* iOS Safari */

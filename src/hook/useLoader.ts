@@ -2,11 +2,10 @@ import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
-import { ObjectLoader } from 'three'
 
 const manager = new THREE.LoadingManager()
 const objLoader = new OBJLoader(manager)
-const objectLoader = new ObjectLoader()
+const objectLoader = new THREE.ObjectLoader()
 const fbxLoader = new FBXLoader()
 const textureLoader = new THREE.TextureLoader(manager)
 
@@ -14,7 +13,7 @@ manager.onProgress = function (item, loaded, total) {
   console.log(item, loaded, total)
 }
 
-export const loadRGBE: _loadRGBEType = (path, fileName) =>
+const loadRGBE: _loadRGBEType = (path, fileName) =>
   new Promise((resolve, reject) => {
     try {
       const hdrEquirect = new RGBELoader().setPath(path).load(
@@ -35,7 +34,7 @@ export const loadRGBE: _loadRGBEType = (path, fileName) =>
     }
   })
 
-export const loadObj: _loadObjType = (path, fileName) =>
+const loadObj: _loadObjType = (path, fileName) =>
   new Promise((resolve, reject) => {
     objLoader.load(
       `${path}${fileName}`,
@@ -54,7 +53,7 @@ export const loadObj: _loadObjType = (path, fileName) =>
     )
   })
 
-export const loadObject: _loadObjectType = (path, fileName) =>
+const loadObjectJSON: _loadObjectType = (path, fileName) =>
   new Promise((res, rej) => {
     objectLoader.load(
       `${path}${fileName}`,
@@ -73,11 +72,7 @@ export const loadObject: _loadObjectType = (path, fileName) =>
     )
   })
 
-// texture
-export const loadTexture: _loadTextureType = (path, fileName) =>
-  textureLoader.load(`${path}${fileName}`)
-
-export const loadAsyncTexture: _loadAsyncTextureType = (path, fileName) =>
+const loadAsyncTexture: _loadAsyncTextureType = (path, fileName) =>
   new Promise((resolve, reject) => {
     textureLoader.load(
       `${path}${fileName}`,
@@ -109,7 +104,7 @@ const _generateTexture = () => {
   return canvas
 }
 
-export const generateTexture: () => THREE.CanvasTexture = () => {
+const generateTexture: () => THREE.CanvasTexture = () => {
   const texture = new THREE.CanvasTexture(_generateTexture())
   texture.magFilter = THREE.NearestFilter
   texture.wrapT = THREE.RepeatWrapping
@@ -118,7 +113,7 @@ export const generateTexture: () => THREE.CanvasTexture = () => {
   return texture
 }
 
-export const loadFBX: _loadFBXType = (path, fileName) =>
+const loadFBX: _loadFBXType = (path, fileName) =>
   new Promise((resolve, reject) => {
     fbxLoader.load(
       `${path}${fileName}`,
@@ -138,15 +133,31 @@ export const loadFBX: _loadFBXType = (path, fileName) =>
   })
 
 export const loadModel = (object: ObjectConfig) => {
-  return object?.type === 'obj' || !object?.type
-    ? loadObj(object?.path || '/models/obj/', object?.fileName || 'lego.obj')
-    : object.type === 'json'
-    ? loadObject(
-        object?.path || '/models/obj/',
-        object?.fileName || 'lego.json'
-      )
-    : loadFBX(
-        object?.path || '/models/fbx/',
-        object?.fileName || 'Fruttiera.fbx'
-      )
+  // check if the object is type of Object3D
+  if (object instanceof THREE.Object3D) return Promise.resolve(object)
+  if (!!object) {
+    const { type, path, fileName } = object
+    return type === 'obj' || !type
+      ? loadObj(path, fileName)
+      : object.type === 'json'
+      ? loadObjectJSON(path, fileName)
+      : loadFBX(path, fileName)
+  } else throw new Error('Object is not defined')
+}
+
+// background
+export const loadBackground = (background?: BackgroundConfig) => {
+  if (background instanceof THREE.DataTexture)
+    return Promise.resolve(background)
+  return background
+    ? loadRGBE(background.path, background.fileName)
+    : Promise.resolve(generateTexture())
+}
+
+// texture
+export const loadTexture = (texture?: TextureConfig) => {
+  if (texture instanceof THREE.Texture) return Promise.resolve(texture)
+  return texture
+    ? loadAsyncTexture(texture.path, texture.fileName)
+    : Promise.resolve(generateTexture())
 }

@@ -1,6 +1,7 @@
 # VIEWER-3D
 
-Lit Web Component
+Viewer 3d is a simple 3d viewer for 3d models. It is based on three.js and is written in typescript.
+Use to load and view 3d models in the browser.
 
 # Use
 
@@ -14,25 +15,58 @@ import:
 ## {properties}:
 
 ```typescript
-  appKey              type: String    default: ''
-  appSecret           type: String    default: ''
-  title               type: String    default: 'VIEWER-3D'
-  description         type: String    default: 'Viewer 3d model (.obj, .fbx, .json (*))'
-  showContentDetail   type: Boolean   default: true
-  modelConfig         type: Viewer3d  default: {
+  modelConfig type: Viewer3dType = {
     object: {
-      path: '/models/obj/',
-      fileName: 'lego.json',
-      type: 'json'
+      path: string,
+      fileName: string,
+      type: type3D //fbx, obj, json
+    },
+    texture: {
+      path: string,
+      fileName: string
     },
     background: {
-      path: '/models/textures/',
-      fileName: 'pedestrian_overpass_1k.hdr'
+      path: string,
+      fileName: string
     }
   }
 ```
 
+The `modelConfig` property is required. It is an object that contains the path to the model, the path to the texture and the path to the background.
+
+- The `object` property is required - you can configure it in two ways.
+  - type `{ path: string, fileName: string }` is an object that contains the path to the model, the name of the model and the type of model. You can download the model from cdn or locally.
+  - type `THREE.Object3D` directly pass the model to the component.( \* )
+    The `texture` property is optional.
+  - type `{ path: string, fileName: string }` is an object that contains the path to the texture and the name of the texture. You can download the model from cdn or locally.
+  - type `THREE.Texture` directly pass the texture to the component.( \*\* )
+    The `background` property is optional.
+  - type `{ path: string, fileName: string }` is an object that contains the path to the background and the name of the background. You can download the model from cdn or locally.
+  - type `THREE.DataTexture` directly pass the background to the component.( \*\*\* )
+
+## example
+
+```typescript
+modelConfig: Viewer3dType = {
+  object: {
+    path: '/models/obj/',
+    fileName: 'PignaOC.obj',
+    type: 'obj',
+  },
+  texture: {
+    path: '/models/textures/',
+    fileName: 'PignaOC.png',
+  },
+  background: {
+    path: '/models/textures/',
+    fileName: 'studio_small_09_4k.hdr',
+  },
+}
+```
+
 > ( \* ) --> [THREE.ObjectLoader](https://threejs.org/docs/#api/en/loaders/ObjectLoader)
+> ( \*\* ) --> [THREE.TextureLoader](https://threejs.org/docs/#api/en/loaders/TextureLoader)
+> ( \*\*\* ) --> [THREE.DataTextureLoader](https://threejs.org/docs/#api/en/loaders/DataTextureLoader)
 
 ## Override Style
 
@@ -50,6 +84,8 @@ import:
 ```
 
 ## Custom Event
+
+If is in the
 
 - viewer-click (event sample)
 

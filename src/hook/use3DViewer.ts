@@ -1,14 +1,10 @@
 import * as THREE from 'three'
+import { CanvasTexture } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // import { catalog } from "../config/catalog";
 // import { actions } from "../store/store";
 
-import {
-  generateTexture,
-  loadAsyncTexture,
-  loadModel,
-  loadRGBE,
-} from './useLoader'
+import { loadBackground, loadModel, loadTexture } from './useLoader'
 
 const _WIDTH = window.innerWidth // * 0.9
 const _HEIGHT = window.innerHeight // * 0.9
@@ -21,7 +17,6 @@ let camera: THREE.PerspectiveCamera,
   renderer: THREE.WebGLRenderer
 
 const _createMaterial = (
-  customTexture: boolean,
   texture: THREE.Texture,
   hdrEquirect: THREE.Texture
 ) => {
@@ -46,12 +41,18 @@ const _createMaterial = (
 
   return new THREE.MeshPhysicalMaterial({
     // color: randomColor,
-    ...(!customTexture && { color: randomColor }),
+    // ...(texture instanceof THREE.Texture
+    //   ? { color: randomColor, alphaMap: texture }
+    //   : { map: texture }),
+    ...(texture instanceof CanvasTexture && {
+      color: randomColor,
+      alphaMap: texture,
+    }),
+    ...(texture instanceof THREE.Texture && { map: texture }),
     metalness: meshParams.metalness,
     roughness: meshParams.roughness,
     ior: meshParams.ior,
     envMap: hdrEquirect,
-    ...(customTexture ? { map: texture } : { alphaMap: texture }),
     envMapIntensity: meshParams.envMapIntensity,
     transmission: meshParams.transmission, // use material.transmission for glass materials
     specularIntensity: meshParams.specularIntensity,
@@ -80,15 +81,15 @@ const _managePosition = (
 ) => {
   // Creo un box che contiene l'obj così da calcolarne i delta
   const boundingBox = new THREE.Box3().setFromObject(obj)
-  console.log(boundingBox)
+  // console.log(boundingBox)
   const {
-    min: { x: minX, y: minY, z: minZ },
-    max: { x: maxX, y: maxY, z: maxZ },
+    min: { /*x: minX,*/ y: minY /*z: minZ*/ },
+    max: { x: maxX, y: maxY /*z: maxZ*/ },
   } = boundingBox
-  const deltaX = (maxX - minX) / 2
+  // const deltaX = (maxX - minX) / 2
   const deltaY = (maxY - minY) / 2
-  const deltaZ = (maxZ - minZ) / 2
-  console.log(deltaX, deltaY, deltaZ, deltaY < 1)
+  // const deltaZ = (maxZ - minZ) / 2
+  // console.log(deltaX, deltaY, deltaZ, deltaY < 1)
   // set obj position
   obj.rotation.set(0, 0, 0)
   obj.position.set(0, deltaY < 1 ? 0 : -deltaY, 0)
@@ -98,24 +99,16 @@ const _managePosition = (
 
 export const applyTextureOnMesh = (
   obj: THREE.Object3D,
-  customTexture: boolean,
   hdrEquirect: THREE.Texture,
   texture: THREE.Texture
 ) => {
-  let _: THREE.Texture
-  if (customTexture) {
-    _ = texture // loadTexture(texture.path, texture.fileName)
-  } else {
-    _ = generateTexture()
-  }
-  // texture &&
   obj &&
     obj.traverse(function (child) {
-      child.addEventListener('click', (a: THREE.Event) => {
-        console.log('click', a)
-      })
+      // child.addEventListener('click', (a: THREE.Event) => {
+      //   applyTextureOnMesh(obj, hdrEquirect, texture)
+      // })
       if (child instanceof THREE.Mesh) {
-        child.material = _createMaterial(customTexture, _, hdrEquirect)
+        child.material = _createMaterial(texture, hdrEquirect)
         // actions.addComponent(child)
         sceneMeshes.push(child)
       } else {
@@ -124,49 +117,59 @@ export const applyTextureOnMesh = (
     })
 }
 
-export const use3DViewer = (
+export const use3DViewer = async (
   mount: HTMLDivElement | undefined,
   modelConfig: Viewer3dType
 ) => {
-  const { object, background, texture } = modelConfig
-  Promise.all([
-    loadRGBE(background.path, background.fileName),
-    loadModel(object),
-    loadAsyncTexture(texture.path, texture.fileName),
-  ]).then(([hdrEquirect, obj, texture]) => {
-    // apply random mesh color to object model
-    applyTextureOnMesh(obj, false, hdrEquirect, texture)
-    // create and configure renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true })
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(_WIDTH, _HEIGHT)
-    renderer.shadowMap.enabled = true
-    renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1
-    renderer.outputEncoding = THREE.sRGBEncoding
-    // mount renderer to dom
-    mount && mount && mount.appendChild(renderer.domElement)
-    // create scene
-    scene = new THREE.Scene()
-    // create camera
-    camera = new THREE.PerspectiveCamera(75, _ASPECT_RATIO, 0.1, 1000)
-    // set texture environment mapping
-    scene.background = hdrEquirect
-    // add obj to scene
-    scene.add(obj)
-    // orbit controls
-    controls = new OrbitControls(camera, renderer.domElement)
-    // settings camera and objec position
-    _managePosition(obj, camera, controls)
-    // ANIMATE
-    const renderAndAnimate = () => {
-      requestAnimationFrame(renderAndAnimate)
-      if (obj) obj.rotation.y -= 0.002
-      // required if controls.enableDamping or controls.autoRotate are set to true
-      controls.update()
-      renderer.render(scene, camera)
-    }
-    renderAndAnimate()
-    window.addEventListener('resize', _onWindowResize)
-  })
+  const { object, background, texture: t } = modelConfig
+  const [obj, hdrEquirect, texture] = await Promise.all([
+    loadModel(object), // 3d model
+    loadBackground(background), // hdrEquirect
+    loadTexture(t), // texture for 3d model
+  ])
+  // apply random mesh color to object model
+  applyTextureOnMesh(obj, hdrEquirect, texture)
+  // create and configure renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true })
+  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setSize(_WIDTH, _HEIGHT)
+  renderer.shadowMap.enabled = true
+  renderer.toneMapping = THREE.ACESFilmicToneMapping
+  renderer.toneMappingExposure = 1
+  renderer.outputEncoding = THREE.sRGBEncoding
+  // mount renderer to dom
+  mount && mount && mount.appendChild(renderer.domElement)
+  // create scene
+  scene = new THREE.Scene()
+  // create camera
+  camera = new THREE.PerspectiveCamera(75, _ASPECT_RATIO, 0.1, 1000)
+  // set texture environment mapping
+  scene.background = hdrEquirect
+
+  // LUCE
+  console.log(scene.background)
+  if (!(scene.background instanceof THREE.DataTexture)) {
+    const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1)
+    const light2 = new THREE.AmbientLight(0x404040)
+    scene.add(light)
+    scene.add(light2)
+  }
+  // add obj to scene
+  scene.add(obj)
+  // orbit controls
+  controls = new OrbitControls(camera, renderer.domElement)
+  // settings camera and objec position
+  _managePosition(obj, camera, controls)
+  // ANIMATE
+  const renderAndAnimate = () => {
+    requestAnimationFrame(renderAndAnimate)
+    if (obj) obj.rotation.y -= 0.002
+    // required if controls.enableDamping or controls.autoRotate are set to true
+    controls.update()
+    renderer.render(scene, camera)
+  }
+  renderAndAnimate()
+  window.addEventListener('resize', _onWindowResize)
+
+  return { obj, hdrEquirect, texture }
 }
