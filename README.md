@@ -34,13 +34,13 @@ import:
 
 The `modelConfig` property is required. It is an object that contains the path to the model, the path to the texture and the path to the background.
 
-- The `object` property is required - you can configure it in two ways.
+- `object` property is required - you can configure it in two ways.
   - type `{ path: string, fileName: string }` is an object that contains the path to the model, the name of the model and the type of model. You can download the model from cdn or locally.
   - type `THREE.Object3D` directly pass the model to the component.( \* )
-    The `texture` property is optional.
+- `texture` property is optional - you can configure it in two ways.
   - type `{ path: string, fileName: string }` is an object that contains the path to the texture and the name of the texture. You can download the model from cdn or locally.
   - type `THREE.Texture` directly pass the texture to the component.( \*\* )
-    The `background` property is optional.
+- `background` property is optional - you can configure it in two ways.
   - type `{ path: string, fileName: string }` is an object that contains the path to the background and the name of the background. You can download the model from cdn or locally.
   - type `THREE.DataTexture` directly pass the background to the component.( \*\*\* )
 

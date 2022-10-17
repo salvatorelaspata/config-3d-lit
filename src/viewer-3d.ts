@@ -1,5 +1,8 @@
+import { createComponent } from '@lit-labs/react'
 import { LitElement, css, html } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
+import { classMap } from 'lit/directives/class-map.js'
+import React from 'react'
 import { applyTextureOnMesh, use3DViewer } from './hook/use3DViewer'
 
 @customElement('viewer-3d')
@@ -65,12 +68,16 @@ export class Viewer3d extends LitElement {
 
   render() {
     return html`<div
-        class=${this.isLoaded && 'hidden'}
+        class=${classMap({ hidden: this.isLoaded })}
         @click=${this.onClickViewer}
         id="viewer"
       ></div>
       <!-- Integrare percentuale -->
-      <div class=${!this.isLoaded && 'loader hidden'}>loading...</div>`
+      <div
+        class=${classMap({ loader: !this.isLoaded, hidden: !this.isLoaded })}
+      >
+        loading...
+      </div>`
   }
 
   static styles = css`
@@ -107,3 +114,7 @@ declare global {
     'viewer-3d': Viewer3d
   }
 }
+
+export const Viewer3dReact = createComponent(React, 'viewer-3d', Viewer3d, {
+  onClickViewer: 'viewer-click',
+})
