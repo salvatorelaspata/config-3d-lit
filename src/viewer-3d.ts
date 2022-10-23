@@ -39,7 +39,7 @@ export class Viewer3d extends LitElement {
     texture: null,
   }
 
-  @property({ type: Boolean })
+  @property({ type: Boolean, state: true })
   isLoaded = false
 
   // React - componentDidMount | useEffect

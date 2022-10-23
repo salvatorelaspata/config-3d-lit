@@ -65,7 +65,9 @@ modelConfig: Viewer3dType = {
 ```
 
 > ( \* ) --> [THREE.ObjectLoader](https://threejs.org/docs/#api/en/loaders/ObjectLoader)
+>
 > ( \*\* ) --> [THREE.TextureLoader](https://threejs.org/docs/#api/en/loaders/TextureLoader)
+>
 > ( \*\*\* ) --> [THREE.DataTextureLoader](https://threejs.org/docs/#api/en/loaders/DataTextureLoader)
 
 ## Override Style
