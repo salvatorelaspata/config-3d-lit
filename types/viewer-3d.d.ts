@@ -16,7 +16,7 @@ declare global {
 }
 
 export declare const Viewer3dReact: React.ForwardRefExoticComponent<
-  Partial<Omit<Viewer3dType>>
+  Partial<Omit<Viewer3d>>
 > &
   Omit<React.HTMLAttributes<HTMLElement>, 'onClickViewer'> & {
     children?: React.ReactNode
