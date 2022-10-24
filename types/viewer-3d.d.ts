@@ -9,11 +9,11 @@ export declare class Viewer3d extends LitElement {
   render(): import('lit').TemplateResult<1>
 }
 
-declare global {
-  interface HTMLElementTagNameMap {
-    'viewer-3d': Viewer3d
-  }
-}
+// declare global {
+//   interface HTMLElementTagNameMap {
+//     'viewer-3d': Viewer3d
+//   }
+// }
 
 export declare const Viewer3dReact: React.ForwardRefExoticComponent<
   Partial<Omit<Viewer3d>>
