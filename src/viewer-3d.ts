@@ -4,6 +4,7 @@ import { customElement, property, query } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 import React from 'react'
 import { applyTextureOnMesh, use3DViewer } from './hook/use3DViewer'
+import { Viewer3dType } from './types/types'
 
 @customElement('viewer-3d')
 export class Viewer3d extends LitElement {

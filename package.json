@@ -1,13 +1,13 @@
 {
   "name": "viewer-3d-lit",
   "private": false,
-  "version": "0.0.10",
+  "version": "0.0.11",
   "type": "module",
   "main": "dist/viewer-3d-lit.js",
   "exports": {
     ".": "./dist/viewer-3d-lit.js"
   },
-  "types": "types/viewer-3.d.ts",
+  "types": "types/viewer-3d.d.ts",
   "files": [
     "dist",
     "types"

@@ -2,6 +2,16 @@ import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+import {
+  BackgroundConfig,
+  ObjectConfig,
+  TextureConfig,
+  _loadAsyncTextureType,
+  _loadFBXType,
+  _loadObjectType,
+  _loadObjType,
+  _loadRGBEType,
+} from '../types/types'
 
 const manager = new THREE.LoadingManager()
 const objLoader = new OBJLoader(manager)

@@ -1,6 +1,6 @@
-type type3D = 'obj' | 'fbx' | 'json'
+export type type3D = 'obj' | 'fbx' | 'json'
 // VIEWER
-type ObjectConfig =
+export type ObjectConfig =
   | {
       path: string
       fileName: string
@@ -8,27 +8,27 @@ type ObjectConfig =
     }
   | THREE.Object3D
 
-type TextureConfig =
+export type TextureConfig =
   | {
       path: string
       fileName: string
     }
   | THREE.Texture
 
-type BackgroundConfig =
+export type BackgroundConfig =
   | {
       path: string
       fileName: string
     }
   | THREE.DataTexture
 
-interface Viewer3dType {
+export interface Viewer3dType {
   object: ObjectConfig
   texture?: TextureConfig
   background?: BackgroundConfig
 }
 
-interface ObjectViewer3d extends Viewer3dType {
+export interface ObjectViewer3d extends Viewer3dType {
   objId: string
   showStars: boolean
   price: string
@@ -39,23 +39,29 @@ interface ObjectViewer3d extends Viewer3dType {
 }
 // USE LOADER
 
-type _loadRGBEType = (
+export type _loadRGBEType = (
   path: string,
   fileName: string
 ) => Promise<THREE.DataTexture>
 
-type _loadObjType = (path: string, fileName: string) => Promise<THREE.Group>
+export type _loadObjType = (
+  path: string,
+  fileName: string
+) => Promise<THREE.Group>
 
-type _loadObjectType = (
+export type _loadObjectType = (
   path: string,
   fileName: string
 ) => Promise<THREE.Object3D>
 
-// type _loadTextureType = (texture?: TextureConfig) => THREE.Texture
+// export type _loadTextureType = (texture?: TextureConfig) => THREE.Texture
 
-type _loadAsyncTextureType = (
+export type _loadAsyncTextureType = (
   path: string,
   fileName: string
 ) => Promise<THREE.Texture>
 
-type _loadFBXType = (path: string, fileName: string) => Promise<THREE.Group>
+export type _loadFBXType = (
+  path: string,
+  fileName: string
+) => Promise<THREE.Group>

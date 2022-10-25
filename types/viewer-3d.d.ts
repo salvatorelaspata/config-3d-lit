@@ -1,4 +1,4 @@
-import { CSSResultGroup, LitElement } from 'lit'
+import { LitElement } from 'lit'
 import React from 'react'
 
 // declare lit type
