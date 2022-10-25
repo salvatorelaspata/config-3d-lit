@@ -1,23 +1,23 @@
-import { CSSResultGroup, LitElement } from 'lit'
-import React from 'react'
-
-// declare lit type
+import { LitElement } from 'lit';
 export declare class Viewer3d extends LitElement {
-  static styles?: import('lit').CSSResult
-  modelConfig: Object
-  private onClickViewer
-  render(): import('lit').TemplateResult<1>
+    modelConfig: Viewer3dType;
+    mount: HTMLDivElement | undefined;
+    scene: {
+        obj: any;
+        hdrEquirect: any;
+        texture: any;
+    };
+    isLoaded: boolean;
+    firstUpdated(): void;
+    onClickViewer(e: MouseEvent): void;
+    render(): import("lit-html").TemplateResult<1>;
+    static styles: import("lit").CSSResult;
 }
-
-// declare global {
-//   interface HTMLElementTagNameMap {
-//     'viewer-3d': Viewer3d
-//   }
-// }
-
-export declare const Viewer3dReact: React.ForwardRefExoticComponent<
-  Partial<Omit<Viewer3d>>
-> &
-  Omit<React.HTMLAttributes<HTMLElement>, 'onClickViewer'> & {
-    children?: React.ReactNode
-  } & React.RefAttributes<unknown>
+declare global {
+    interface HTMLElementTagNameMap {
+        'viewer-3d': Viewer3d;
+    }
+}
+export declare const Viewer3dReact: import("@lit-labs/react").ReactWebComponent<Viewer3d, {
+    onClickViewer: string;
+}>;

@@ -1,7 +1,7 @@
 {
   "name": "viewer-3d-lit",
   "private": false,
-  "version": "0.0.8",
+  "version": "0.0.9",
   "type": "module",
   "main": "dist/viewer-3d-lit.js",
   "exports": {
@@ -9,8 +9,7 @@
   },
   "types": "types/viewer-3.d.ts",
   "files": [
-    "dist",
-    "src/types"
+    "dist"
   ],
   "scripts": {
     "dev": "vite --host",
