@@ -1,7 +1,7 @@
 import * as THREE from 'three'
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import {
   BackgroundConfig,
   ObjectConfig,

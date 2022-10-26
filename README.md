@@ -46,6 +46,8 @@ The `modelConfig` property is required. It is an object that contains the path t
 
 ## example
 
+the vanilla html expample are in dev folder
+
 ```typescript
 modelConfig: Viewer3dType = {
   object: {

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { CanvasTexture } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { Viewer3dType } from '../types/types'
 // import { catalog } from "../config/catalog";
 // import { actions } from "../store/store";
