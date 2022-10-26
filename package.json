@@ -1,11 +1,12 @@
 {
   "name": "viewer-3d-lit",
   "private": false,
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Viewer 3d Lit",
   "type": "module",
   "main": "viewer-3d-lit.js",
   "module": "viewer-3d-lit.js",
+  "types": "viewer-3d-lit.d.ts",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
@@ -19,17 +20,17 @@
     "three": "^0.144.0"
   },
   "devDependencies": {
+    "typescript": "^4.6.4",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@types/react": "^18.0.21",
     "@types/three": "^0.144.0",
     "@web/dev-server": "^0.1.35",
     "@web/dev-server-legacy": "^1.0.1",
+    "@webcomponents/webcomponentsjs": "^2.7.0",
     "rollup": "^2.73.0",
     "rollup-plugin-summary": "^1.4.3",
-    "rollup-plugin-terser": "^7.0.2",
-    "@webcomponents/webcomponentsjs": "^2.7.0",
-    "typescript": "^4.6.4"
+    "rollup-plugin-terser": "^7.0.2"
   },
   "customElements": "custom-elements.json"
 }
