@@ -35,5 +35,4 @@ custom-elements.json
 # viewer-3d-lit.d.ts.map
 # only generated for size check
 viewer-3d-lit.bundled.js
-hook
 models

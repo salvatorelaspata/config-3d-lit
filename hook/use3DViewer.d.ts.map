@@ -1,0 +1,1 @@
+{"version":3,"file":"use3DViewer.d.ts","sourceRoot":"","sources":["../src/hook/use3DViewer.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAA;AAG9B,OAAO,EAAE,YAAY,EAAE,MAAM,gBAAgB,CAAA;AAiG7C,eAAO,MAAM,kBAAkB,QACxB,MAAM,QAAQ,eACN,MAAM,OAAO,WACjB,MAAM,OAAO,SAevB,CAAA;AAED,eAAO,MAAM,WAAW,UACf,cAAc,GAAG,SAAS,eACpB,YAAY;;;;EAqD1B,CAAA"}
