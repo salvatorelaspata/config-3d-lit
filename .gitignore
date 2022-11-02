@@ -1,38 +1,3 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
 node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-
-/node_modules/
-/lib/
-/test/
-custom-elements.json
-# top level source
-# viewer-3d-lit.js
-# viewer-3d-lit.js.map
-# viewer-3d-lit.d.ts
-# viewer-3d-lit.d.ts.map
-# only generated for size check
-viewer-3d-lit.bundled.js
 models
+dist

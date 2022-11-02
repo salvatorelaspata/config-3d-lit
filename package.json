@@ -1,12 +1,12 @@
 {
   "name": "viewer-3d-lit",
   "private": false,
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Viewer 3d Lit",
   "type": "module",
-  "main": "viewer-3d-lit.js",
-  "module": "viewer-3d-lit.js",
-  "types": "viewer-3d-lit.d.ts",
+  "main": "dist/viewer-3d-lit.js",
+  "module": "dist/viewer-3d-lit.js",
+  "types": "dist/viewer-3d-lit.d.ts",
   "scripts": {
     "build": "tsc",
     "dev": "npm run build:watch & npm run serve",
@@ -27,6 +27,5 @@
     "@web/dev-server": "^0.1.35",
     "@web/dev-server-legacy": "^1.0.1",
     "@webcomponents/webcomponentsjs": "^2.7.0"
-  },
-  "customElements": "custom-elements.json"
+  }
 }
