@@ -1,4 +1,5 @@
 // import { createComponent } from '@lit-labs/react'
+import * as THREE from 'three'
 import { LitElement, html, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'

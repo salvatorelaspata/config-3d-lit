@@ -29,10 +29,10 @@ dist-ssr
 /test/
 custom-elements.json
 # top level source
-viewer-3d-lit.js
-viewer-3d-lit.js.map
-viewer-3d-lit.d.ts
-viewer-3d-lit.d.ts.map
+# viewer-3d-lit.js
+# viewer-3d-lit.js.map
+# viewer-3d-lit.d.ts
+# viewer-3d-lit.d.ts.map
 # only generated for size check
 viewer-3d-lit.bundled.js
 hook
