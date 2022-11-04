@@ -3,68 +3,85 @@
 Viewer 3d is a simple 3d viewer for 3d models. It is based on three.js and is written in typescript.
 Use to load and view 3d models in the browser.
 
-# Use
+### Installing
 
-import:
-`<script type="module" src="/src/viewer-3d.ts"></script>`
+`npm i viewer-3d-lit`
+
+### Import
+
+Importing in **HTML**
 
 ```html
-<viewer-3d {properties}> . . . ( not showing ) </viewer-3d>
+<script type="module">
+  import './node_modules/viewer-3d-lit/dist/viewer-3d-lit.js'
+</script>
+<!-- or -->
+<script type="module" src="../dist/viewer-3d-lit.js"></script>
 ```
+
+Importing in **React**
+
+```javascript
+import { Viewer3dReact } from '../../dist/viewer-3d-lit'
+```
+
+### Use
+
+Using in **HTML**
+
+```html
+<viewer-3d
+  object="models/obj/PignaOC.obj"
+  texture="models/textures/PignaOC.png"
+  background="models/textures/studio_small_09_4k.hdr"
+>
+  not showing (coming soon)
+</viewer-3d>
+```
+
+Using in **ReactJS**
+
+```javascript
+const App = () => (
+  <div>
+    <Viewer3dReact
+      object='models/obj/PignaOC.obj' // local dir or http endpoint
+      texture='models/textures/PignaOC.png' // local dir or http endpoint
+      background='models/textures/studio_small_09_4k.hdr' // local dir or http endpoint
+    />
+  </div>
+)
+```
+
+Simple model:
+[https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html](https://people.sc.fsu.edu/~jburkardt/data/obj/obj.html)
+Simple background:
+[https://polyhaven.com/](https://polyhaven.com/)
+[https://www.hdri-hub.com/hdrishop/freesamples/](https://www.hdri-hub.com/hdrishop/freesamples/)
+
+> to use http approach in localhost and have **CORS error** launch chrome in disable-web-security mode
+> `open -na Google\ Chrome --args --user-data-dir=/tmp/temporary-chrome-profile-dir --disable-web-security --disable-site-isolation-trials`
 
 ## {properties}:
 
-```typescript
-  modelConfig type: Viewer3dType = {
-    object: {
-      path: string,
-      fileName: string,
-      type: type3D //fbx, obj, json
-    },
-    texture: {
-      path: string,
-      fileName: string
-    },
-    background: {
-      path: string,
-      fileName: string
-    }
-  }
+```javascript
+  object: "string",     // .obj | .fbx | .json  file
+  texture: "string",    // .png                 file
+  background: "string"  // .hdr                 file
 ```
 
-The `modelConfig` property is required. It is an object that contains the path to the model, the path to the texture and the path to the background.
-
-- `object` property is required - you can configure it in two ways.
-  - type `{ path: string, fileName: string }` is an object that contains the path to the model, the name of the model and the type of model. You can download the model from cdn or locally.
-  - type `THREE.Object3D` directly pass the model to the component.( \* )
-- `texture` property is optional - you can configure it in two ways.
-  - type `{ path: string, fileName: string }` is an object that contains the path to the texture and the name of the texture. You can download the model from cdn or locally.
-  - type `THREE.Texture` directly pass the texture to the component.( \*\* )
-- `background` property is optional - you can configure it in two ways.
-  - type `{ path: string, fileName: string }` is an object that contains the path to the background and the name of the background. You can download the model from cdn or locally.
-  - type `THREE.DataTexture` directly pass the background to the component.( \*\*\* )
-
-## example
-
-the vanilla html expample are in dev folder
-
-```typescript
-modelConfig: Viewer3dType = {
-  object: {
-    path: '/models/obj/',
-    fileName: 'PignaOC.obj',
-    type: 'obj',
-  },
-  texture: {
-    path: '/models/textures/',
-    fileName: 'PignaOC.png',
-  },
-  background: {
-    path: '/models/textures/',
-    fileName: 'studio_small_09_4k.hdr',
-  },
-}
-```
+- `object` property is required.
+  - type `string` is the path that contains the model, the type of model is generated from extension. You can set the path from cdn or locally.
+    Supported type:
+    - type [THREE.Object3D](https://threejs.org/docs/index.html?q=Object3d#api/en/core/Object3D) directly pass the model to the component.( \* )
+- `texture` property is optional - if you don't specify the texture is generated.
+  - type `string` is the path that contains the model, the type of model is generated from extension. You can set the path from cdn or locally.
+    Supported type:
+    - type [THREE.Texture](https://threejs.org/docs/index.html?q=texture#api/en/textures/Texture) directly pass the model to the component.( \*\* )
+- `background` property is optional - if you don't specify set the default backgrou
+  - type `string` is the path that contains the model, the type of model is generated from extension. You can set the path from cdn or locally.
+    Supported type:
+    - type [THREE.DataTexture](https://threejs.org/docs/index.html?q=datatext#api/en/textures/DataTexture) directly pass the model to the component.( \*\*\* )
 
 > ( \* ) --> [THREE.ObjectLoader](https://threejs.org/docs/#api/en/loaders/ObjectLoader)
 >

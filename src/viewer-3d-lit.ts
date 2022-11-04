@@ -1,33 +1,20 @@
-// import { createComponent } from '@lit-labs/react'
 import * as THREE from 'three'
 import { LitElement, html, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
-// import React from 'react'
 import { applyTextureOnMesh, use3DViewer } from './hook/use3DViewer'
-import { Viewer3dType } from './types/types'
 
 @customElement('viewer-3d-lit')
 export class Viewer3d extends LitElement {
   // modelConfig: Viewer3dType
   // the path is local or remote
   // if texture is not defined, a default texture is applied (generateTexture)
-  @property({ type: Object })
-  modelConfig: Viewer3dType = {
-    object: {
-      path: '/models/obj/',
-      fileName: 'PignaOC.obj',
-      type: 'obj', // fbx, obj, json
-    },
-    texture: {
-      path: '/models/textures/',
-      fileName: 'PignaOC.png',
-    },
-    background: {
-      path: '/models/textures/',
-      fileName: 'studio_small_09_4k.hdr',
-    },
-  }
+  @property({ type: String })
+  object = '/models/obj/PignaOC.obj'
+  @property({ type: String })
+  texture = '/models/textures/PignaOC.png'
+  @property({ type: String })
+  background = '/models/textures/studio_small_09_4k.hdr'
 
   // React - useRef
   @query('#viewer')
@@ -47,14 +34,33 @@ export class Viewer3d extends LitElement {
   // React - componentDidMount | useEffect
   override firstUpdated() {
     const aUse = async () => {
-      const { obj, hdrEquirect, texture } = await use3DViewer(
-        this.mount,
-        this.modelConfig
-      )
+      const { obj, hdrEquirect, texture } = await use3DViewer(this.mount, {
+        object: {
+          path: this.object,
+          fileName: '',
+          type: this._getExtension(this.object), // fbx, obj, json
+        },
+        texture: {
+          path: this.texture,
+          fileName: '',
+        },
+        background: {
+          path: this.background,
+          fileName: '',
+        },
+      })
       this.scene = { obj, hdrEquirect, texture }
       this.isLoaded = true
     }
     aUse()
+  }
+
+  _getExtension(path: string) {
+    const extension = path.split('.').pop()?.toLocaleLowerCase()
+    if (extension === 'obj') return 'obj'
+    if (extension === 'fbx') return 'fbx'
+    if (extension === 'json') return 'json'
+    else throw new Error('Extension not supported')
   }
 
   onClickViewer(e: MouseEvent) {
@@ -135,7 +141,3 @@ declare global {
     'viewer-3d-lit': Viewer3d
   }
 }
-
-// export const Viewer3dReact = createComponent(React, 'viewer-3d-lit', Viewer3d, {
-//   onClickViewer: 'viewer-click',
-// })

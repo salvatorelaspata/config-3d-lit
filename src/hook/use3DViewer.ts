@@ -84,13 +84,13 @@ const _managePosition = (
   const boundingBox = new THREE.Box3().setFromObject(obj)
   // console.log(boundingBox)
   const {
-    min: { /*x: minX,*/ y: minY /*z: minZ*/ },
-    max: { x: maxX, y: maxY /*z: maxZ*/ },
+    min: { x: minX, y: minY, z: minZ },
+    max: { x: maxX, y: maxY, z: maxZ },
   } = boundingBox
-  // const deltaX = (maxX - minX) / 2
+  const deltaX = (maxX - minX) / 2
   const deltaY = (maxY - minY) / 2
-  // const deltaZ = (maxZ - minZ) / 2
-  // console.log(deltaX, deltaY, deltaZ, deltaY < 1)
+  const deltaZ = (maxZ - minZ) / 2
+  console.log(deltaX, deltaY, deltaZ, deltaY < 1)
   // set obj position
   obj.rotation.set(0, 0, 0)
   obj.position.set(0, deltaY < 1 ? 0 : -deltaY, 0)
