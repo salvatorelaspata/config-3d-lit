@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { LitElement, html, css } from 'lit'
 import { customElement, property, query } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
-import { applyTextureOnMesh, use3DViewer } from './hook/use3DViewer'
+import { applyTextureOnMesh, use3DViewer } from './hook/use3DViewer.js'
 
 @customElement('viewer-3d-lit')
 export class Viewer3d extends LitElement {

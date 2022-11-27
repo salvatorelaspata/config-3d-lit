@@ -11,7 +11,7 @@ import {
   _loadObjectType,
   _loadObjType,
   _loadRGBEType,
-} from '../types/types'
+} from '../types/types.js'
 
 const manager = new THREE.LoadingManager()
 const objLoader = new OBJLoader(manager)

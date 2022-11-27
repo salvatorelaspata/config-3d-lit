@@ -1,7 +1,7 @@
 {
   "name": "viewer-3d-lit",
   "private": false,
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "Viewer 3d Lit",
   "repository": {
     "type": "git",

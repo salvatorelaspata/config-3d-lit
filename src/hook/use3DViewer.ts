@@ -1,11 +1,11 @@
 import * as THREE from 'three'
 import { CanvasTexture } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { Viewer3dType } from '../types/types'
+import { Viewer3dType } from '../types/types.js'
 // import { catalog } from "../config/catalog";
 // import { actions } from "../store/store";
 
-import { loadBackground, loadModel, loadTexture } from './useLoader'
+import { loadBackground, loadModel, loadTexture } from './useLoader.js'
 
 const _WIDTH = window.innerWidth // * 0.9
 const _HEIGHT = window.innerHeight // * 0.9
