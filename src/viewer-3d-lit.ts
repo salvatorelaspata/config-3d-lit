@@ -6,7 +6,6 @@ import { applyTextureOnMesh, use3DViewer } from './hook/use3DViewer.js'
 
 @customElement('viewer-3d-lit')
 export class Viewer3d extends LitElement {
-  // modelConfig: Viewer3dType
   // the path is local or remote
   // if texture is not defined, a default texture is applied (generateTexture)
   @property({ type: String })
